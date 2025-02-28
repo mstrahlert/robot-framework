@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<robot generator="Robot 6.1.1 (Python 3.6.8 on linux)" generated="20250228 08:18:28.515" rpa="false" schemaversion="4">
+<suite id="s1" name="Tests" source="/root/robot-framework/demo/tests">
+<suite id="s1-s1" name="Suite001" source="/root/robot-framework/demo/tests/suite001.robot">
+<test id="s1-s1-t1" name="Assert That OS Is Linux" line="10">
+<kw name="Check If OS Is Linux" library="req001">
+<doc>Uses python platform.system() to determine operating system</doc>
+<kw name="Evaluate" library="BuiltIn">
+<var>${system_os}</var>
+<arg>platform.system()</arg>
+<doc>Evaluates the given expression in Python and returns the result.</doc>
+<msg timestamp="20250228 08:18:28.571" level="INFO">${system_os} = Linux</msg>
+<status status="PASS" starttime="20250228 08:18:28.562" endtime="20250228 08:18:28.572"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${system_os}</arg>
+<arg>Linux</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20250228 08:18:28.572" endtime="20250228 08:18:28.573"/>
+</kw>
+<status status="PASS" starttime="20250228 08:18:28.562" endtime="20250228 08:18:28.573"/>
+</kw>
+<doc>Uses python platform.system() to determine operating system</doc>
+<tag>demo-req001</tag>
+<tag>req001</tag>
+<status status="PASS" starttime="20250228 08:18:28.561" endtime="20250228 08:18:28.573"/>
+</test>
+<test id="s1-s1-t2" name="Assert That OS Is RHEL Based" line="14">
+<kw name="Check If OS Is RHEL Based" library="req001">
+<doc>Parses the file /etc/system-release</doc>
+<kw name="Get File" library="OperatingSystem">
+<var>${system_release_file_contents}</var>
+<arg>/etc/system-release</arg>
+<doc>Returns the contents of a specified file.</doc>
+<msg timestamp="20250228 08:18:28.576" level="INFO" html="true">Getting file '&lt;a href="file:///etc/system-release"&gt;/etc/system-release&lt;/a&gt;'.</msg>
+<msg timestamp="20250228 08:18:28.576" level="INFO">${system_release_file_contents} = Rocky Linux release 8.10 (Green Obsidian)
+</msg>
+<status status="PASS" starttime="20250228 08:18:28.575" endtime="20250228 08:18:28.576"/>
+</kw>
+<kw name="Split String" library="String">
+<var>${system_dist_list}</var>
+<arg>${system_release_file_contents}</arg>
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<msg timestamp="20250228 08:18:28.577" level="INFO">${system_dist_list} = ['Rocky', 'Linux', 'release', '8.10', '(Green', 'Obsidian)']</msg>
+<status status="PASS" starttime="20250228 08:18:28.576" endtime="20250228 08:18:28.577"/>
+</kw>
+<kw name="Should Contain" library="BuiltIn">
+<arg>${RHEL_BASED_OS}</arg>
+<arg>${system_dist_list}[0]</arg>
+<doc>Fails if ``container`` does not contain ``item`` one or more times.</doc>
+<status status="PASS" starttime="20250228 08:18:28.577" endtime="20250228 08:18:28.577"/>
+</kw>
+<status status="PASS" starttime="20250228 08:18:28.575" endtime="20250228 08:18:28.577"/>
+</kw>
+<doc>Parses the file /etc/system-release
+
+/etc/system-release contains the name of the
+release. This is arbitrary but the first word
+contains the actual release name. This is tested
+against a list of known RHEL based OSes.</doc>
+<tag>demo-req001</tag>
+<tag>req001</tag>
+<status status="PASS" starttime="20250228 08:18:28.574" endtime="20250228 08:18:28.577"/>
+</test>
+<test id="s1-s1-t3" name="Assert That OS Is Major Release 8" line="23">
+<kw name="Check If OS Is Major Release 8" library="req001">
+<doc>Parses the file /etc/os-release</doc>
+<kw name="Grep File" library="OperatingSystem">
+<var>${version_id}</var>
+<arg>/etc/os-release</arg>
+<arg>VERSION_ID</arg>
+<doc>Returns the lines of the specified file that match the ``pattern``.</doc>
+<msg timestamp="20250228 08:18:28.579" level="INFO" html="true">Reading file '&lt;a href="file:///etc/os-release"&gt;/etc/os-release&lt;/a&gt;'.</msg>
+<msg timestamp="20250228 08:18:28.579" level="INFO">1 out of 17 lines matched</msg>
+<msg timestamp="20250228 08:18:28.579" level="INFO">${version_id} = VERSION_ID="8.10"</msg>
+<status status="PASS" starttime="20250228 08:18:28.579" endtime="20250228 08:18:28.579"/>
+</kw>
+<kw name="Split String" library="String">
+<var>${version_id_list}</var>
+<arg>${version_id}</arg>
+<arg>=</arg>
+<doc>Splits the ``string`` using ``separator`` as a delimiter string.</doc>
+<msg timestamp="20250228 08:18:28.580" level="INFO">${version_id_list} = ['VERSION_ID', '"8.10"']</msg>
+<status status="PASS" starttime="20250228 08:18:28.579" endtime="20250228 08:18:28.580"/>
+</kw>
+<kw name="Strip String" library="String">
+<var>${version_major}</var>
+<arg>${version_id_list}[1]</arg>
+<arg>both</arg>
+<arg>\"</arg>
+<doc>Remove leading and/or trailing whitespaces from the given string.</doc>
+<msg timestamp="20250228 08:18:28.580" level="INFO">${version_major} = 8.10</msg>
+<status status="PASS" starttime="20250228 08:18:28.580" endtime="20250228 08:18:28.580"/>
+</kw>
+<kw name="Fetch From Left" library="String">
+<var>${version_major}</var>
+<arg>${version_major}</arg>
+<arg>.</arg>
+<doc>Returns contents of the ``string`` before the first occurrence of ``marker``.</doc>
+<msg timestamp="20250228 08:18:28.581" level="INFO">${version_major} = 8</msg>
+<status status="PASS" starttime="20250228 08:18:28.580" endtime="20250228 08:18:28.581"/>
+</kw>
+<kw name="Should Be Equal" library="BuiltIn">
+<arg>${version_major}</arg>
+<arg>8</arg>
+<doc>Fails if the given objects are unequal.</doc>
+<status status="PASS" starttime="20250228 08:18:28.581" endtime="20250228 08:18:28.581"/>
+</kw>
+<status status="PASS" starttime="20250228 08:18:28.578" endtime="20250228 08:18:28.581"/>
+</kw>
+<doc>Parses the file /etc/os-release
+
+/etc/os-release contains a number of variables of
+which VERSION_ID is one. Fetching this value and store
+in a variable becomes tricky when in contains
+double quotes. This will split the string into
+option and value pair, store the pair and strip
+it of the double quotes. Then treat is a string
+and return the major version number.</doc>
+<tag>demo-req001</tag>
+<tag>req001</tag>
+<status status="PASS" starttime="20250228 08:18:28.578" endtime="20250228 08:18:28.581"/>
+</test>
+<doc>Test case for demo-req001
+
+demo-req001 states that system
+shall run on Linux RHEL8 based OS</doc>
+<status status="PASS" starttime="20250228 08:18:28.541" endtime="20250228 08:18:28.582"/>
+</suite>
+<status status="PASS" starttime="20250228 08:18:28.516" endtime="20250228 08:18:28.583"/>
+</suite>
+<statistics>
+<total>
+<stat pass="3" fail="0" skip="0">All Tests</stat>
+</total>
+<tag>
+<stat pass="3" fail="0" skip="0">demo-req001</stat>
+<stat pass="3" fail="0" skip="0">req001</stat>
+</tag>
+<suite>
+<stat pass="3" fail="0" skip="0" id="s1" name="Tests">Tests</stat>
+<stat pass="3" fail="0" skip="0" id="s1-s1" name="Suite001">Tests.Suite001</stat>
+</suite>
+</statistics>
+<errors>
+</errors>
+</robot>
